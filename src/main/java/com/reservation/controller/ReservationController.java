@@ -1,9 +1,7 @@
 package com.reservation.controller;
 
 import com.reservation.domain.DTOs.ReservationDTO;
-import com.reservation.domain.Hotel;
 import com.reservation.domain.Reservation;
-import com.reservation.domain.Room;
 import com.reservation.repository.RoomRepository;
 import com.reservation.service.ReservationService;
 import exception.ReservationException;
@@ -11,8 +9,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
-import java.util.List;
-import java.util.Optional;
 
 @RestController
 public class ReservationController {
@@ -53,11 +49,29 @@ public class ReservationController {
         }
     }
 
-    @PutMapping("/reservations/{id}")
-    public ResponseEntity updateReservation(@RequestBody ReservationDTO reservationDTO, @PathVariable Integer id) {
+    @PutMapping("/reservations/{id}/{roomId}")
+    public ResponseEntity<String> updateRoom(@PathVariable Integer id, @PathVariable Integer roomId) {
         try {
-            Reservation reservation = reservationService.updateReservation(reservationDTO, id);
-            return ResponseEntity.accepted().body(reservation);
+            int updatedRows = reservationService.updateRoom(id, roomId);
+            if (updatedRows > 0) {
+                return ResponseEntity.accepted().body("Successfully updated!");
+            } else {
+                return ResponseEntity.badRequest().body("No reservation was updated!");
+            }
+        } catch (ReservationException e) {
+            return ResponseEntity.internalServerError().body(e.getMessage());
+        }
+    }
+
+    @PutMapping("/reservations/feedback/{id}/{feedback}")
+    public ResponseEntity<String> updateFeedback(@PathVariable Integer id, @PathVariable String feedback) {
+        try {
+            int updatedRows = reservationService.addFeedback(id, feedback);
+            if (updatedRows > 0) {
+                return ResponseEntity.accepted().body("Successfully updated!");
+            } else {
+                return ResponseEntity.badRequest().body("No reservation was updated!");
+            }
         } catch (ReservationException e) {
             return ResponseEntity.internalServerError().body(e.getMessage());
         }

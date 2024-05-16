@@ -28,8 +28,9 @@ create table reservations
         constraint fk_user references users,
     hotel_id    integer
         constraint fk_hotel references hotels,
-    room_number varchar
-        constraint fk_room references rooms (room_number),
+    room_id varchar
+        constraint fk_room references rooms (room_id),
     start_date  date,
-    end_date    date
+    end_date    date,
+    feedback varchar
 );

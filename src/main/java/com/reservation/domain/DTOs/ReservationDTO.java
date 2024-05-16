@@ -4,18 +4,28 @@ import java.io.Serializable;
 import java.util.Date;
 
 public class ReservationDTO implements Serializable {
+    private Integer id;
     private Integer userId;
     private Integer hotelId;
     private Integer roomId;
     private Date startDate;
     private Date endDate;
 
-    public ReservationDTO(Integer userId, Integer hotelId, Integer roomId, Date startDate, Date endDate) {
+    public ReservationDTO(Integer id, Integer userId, Integer hotelId, Integer roomId, Date startDate, Date endDate) {
+        this.id = id;
         this.userId = userId;
         this.hotelId = hotelId;
         this.roomId = roomId;
         this.startDate = startDate;
         this.endDate = endDate;
+    }
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
     }
 
     public Integer getUserId() {

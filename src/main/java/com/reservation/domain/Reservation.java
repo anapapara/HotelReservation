@@ -27,6 +27,16 @@ public class Reservation implements Serializable {
     private Date startDate;
     private Date endDate;
 
+    private String feedback;
+
+    public String getFeedback() {
+        return feedback;
+    }
+
+    public void setFeedback(String feedback) {
+        this.feedback = feedback;
+    }
+
     public Reservation() {
     }
 
@@ -36,6 +46,10 @@ public class Reservation implements Serializable {
         this.room = room;
         this.startDate = startDate;
         this.endDate = endDate;
+    }
+
+    public Integer getId() {
+        return id;
     }
 
     public User getUser() {

@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
@@ -30,4 +31,14 @@ public interface ReservationRepository extends JpaRepository<Reservation, Intege
     @Override
     Optional<Reservation> findById(Integer integer);
 
+    @Modifying
+    @Transactional
+    @Query("update Reservation r set r.feedback = :feedback where r.id = :reservationId")
+    int updateFeedback(@Param("reservationId") Integer reservationId,
+                               @Param("feedback") String feedback);
+    @Modifying
+    @Transactional
+    @Query("update Reservation r set r.room = :room where r.id = :rId")
+    int updateRoom(@Param("rId") Integer rId,
+                               @Param("room") Room room);
 }
