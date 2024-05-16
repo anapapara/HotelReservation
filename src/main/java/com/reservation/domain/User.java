@@ -5,6 +5,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 
 import java.io.Serializable;
+import java.util.Objects;
 
 @Entity
 @Table(name = "users")
@@ -35,5 +36,10 @@ public class User implements Serializable {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, name);
     }
 }

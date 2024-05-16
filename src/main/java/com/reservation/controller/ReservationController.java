@@ -1,8 +1,7 @@
 package com.reservation.controller;
 
-import com.reservation.domain.DTOs.ReservationDTO;
+import com.reservation.domain.dto.ReservationDTO;
 import com.reservation.domain.Reservation;
-import com.reservation.repository.RoomRepository;
 import com.reservation.service.ReservationService;
 import exception.ReservationException;
 import org.springframework.http.ResponseEntity;
@@ -13,12 +12,9 @@ import java.io.IOException;
 @RestController
 public class ReservationController {
     private final ReservationService reservationService;
-    private final RoomRepository roomRepository;
 
-    public ReservationController(ReservationService service,
-                                 RoomRepository roomRepository) {
+    public ReservationController(ReservationService service) {
         this.reservationService = service;
-        this.roomRepository = roomRepository;
     }
 
     @GetMapping("/reservations")
@@ -66,7 +62,7 @@ public class ReservationController {
     @PutMapping("/reservations/feedback/{id}/{feedback}")
     public ResponseEntity<String> updateFeedback(@PathVariable Integer id, @PathVariable String feedback) {
         try {
-            int updatedRows = reservationService.addFeedback(id, feedback);
+            int updatedRows = reservationService.updateFeedback(id, feedback);
             if (updatedRows > 0) {
                 return ResponseEntity.accepted().body("Successfully updated!");
             } else {

@@ -1,6 +1,6 @@
 package com.reservation.service;
 
-import com.reservation.domain.DTOs.ReservationDTO;
+import com.reservation.domain.dto.ReservationDTO;
 import com.reservation.domain.Hotel;
 import com.reservation.domain.Reservation;
 import com.reservation.domain.Room;
@@ -33,8 +33,17 @@ public class ReservationService {
         this.roomRepository = roomRepository;
     }
 
-    public List<Reservation> getAll() throws IOException {
-        return reservationRepository.findAll();
+    public Reservation save(Reservation reservation) throws ReservationException {
+        List<Reservation> reservationsRoom = reservationRepository.findByHotelRoom(reservation.getHotel().getId(), reservation.getRoom().getId());
+        if (reservation.getRoom().getIsAvailable()) {
+            for (Reservation r : reservationsRoom) {
+                if (!(r.getEndDate().before(reservation.getStartDate()) || r.getStartDate().after(reservation.getEndDate()))) {
+                    throw new ReservationException("Room is not available in selected interval");
+                }
+            }
+            return reservationRepository.save(reservation);
+        }
+        throw new ReservationException("Room is not available");
     }
 
     public List<ReservationDTO> getAllDTO() throws IOException {
@@ -71,17 +80,32 @@ public class ReservationService {
 
     }
 
-    public Reservation save(Reservation reservation) throws ReservationException {
-        List<Reservation> reservationsRoom = reservationRepository.findByHotelRoom(reservation.getHotel().getId(), reservation.getRoom().getId());
-        if (reservation.getRoom().getIsAvailable()) {
-            for (Reservation r : reservationsRoom) {
-                if (!(r.getEndDate().before(reservation.getStartDate()) || r.getStartDate().after(reservation.getEndDate()))) {
-                    throw new ReservationException("Room is not available in selected interval");
-                }
+    public int updateFeedback(Integer reservationId, String feedback) throws ReservationException {
+        Optional<Reservation> reservation = reservationRepository.findById(reservationId);
+        if (reservation.isPresent()) {
+            if (new Date().compareTo(reservation.get().getEndDate()) >= 0) {
+                return reservationRepository.updateFeedback(reservationId, feedback);
             }
-            return reservationRepository.save(reservation);
+            throw new ReservationException("You cannot add feedback before reservation ending!");
+        } else {
+            throw new ReservationException("Invalid reservation");
         }
-        throw new ReservationException("Room is not available");
+    }
+
+    public Reservation deleteById(Integer id) throws ReservationException {
+        Optional<Reservation> reservation = reservationRepository.findById(id);
+        if (reservation.isPresent()) {
+            Duration duration = Duration.between(new Date().toInstant(), reservation.get().getStartDate().toInstant());
+            long differenceInMinutes = Math.abs(duration.toMinutes());
+            if (differenceInMinutes > 120) {
+                reservationRepository.deleteById(id);
+                return reservation.get();
+            } else {
+                throw new ReservationException("You can no longer cancel the reservation!");
+            }
+        } else {
+            throw new ReservationException("The reservation you want to cancel does not exist!");
+        }
     }
 
     public Reservation reservationFromDTO(ReservationDTO reservationDTO) throws ReservationException {
@@ -102,33 +126,5 @@ public class ReservationService {
 
     private ReservationDTO reservationToDTO(Reservation reservation) {
         return new ReservationDTO(reservation.getId(), reservation.getUser().getId(), reservation.getHotel().getId(), reservation.getRoom().getId(), reservation.getStartDate(), reservation.getEndDate());
-    }
-
-    public Reservation deleteById(Integer id) throws ReservationException {
-        Optional<Reservation> reservation = reservationRepository.findById(id);
-        if (reservation.isPresent()) {
-            Duration duration = Duration.between(new Date().toInstant(), reservation.get().getStartDate().toInstant());
-            long differenceInMinutes = Math.abs(duration.toMinutes());
-            if (differenceInMinutes > 120) {
-                reservationRepository.deleteById(id);
-                return reservation.get();
-            } else {
-                throw new ReservationException("You can no longer cancel the reservation!");
-            }
-        } else {
-            throw new ReservationException("The reservation you want to cancel does not exist!");
-        }
-    }
-
-    public int addFeedback(Integer reservationId, String feedback) throws ReservationException {
-        Optional<Reservation> reservation = reservationRepository.findById(reservationId);
-        if (reservation.isPresent()) {
-            if (new Date().compareTo(reservation.get().getEndDate()) >= 0) {
-                return reservationRepository.updateFeedback(reservationId, feedback);
-            }
-            throw new ReservationException("You cannot add feedback before reservation ending!");
-        } else {
-            throw new ReservationException("Invalid reservation");
-        }
     }
 }

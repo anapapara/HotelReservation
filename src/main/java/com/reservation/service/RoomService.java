@@ -4,7 +4,6 @@ import com.reservation.domain.Room;
 import com.reservation.repository.RoomRepository;
 import org.springframework.stereotype.Service;
 
-import java.io.IOException;
 import java.util.List;
 
 @Service
@@ -15,7 +14,7 @@ public class RoomService {
         this.roomRepository = roomRepository;
     }
 
-    public List<Room> findAvailableByHotelId(Integer hotelId) throws IOException {
+    public List<Room> findAvailableByHotelId(Integer hotelId) {
         return roomRepository.findAllAvailableByHotelId(hotelId);
     }
 

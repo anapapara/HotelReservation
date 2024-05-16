@@ -16,10 +16,13 @@ import java.util.Optional;
 public interface ReservationRepository extends JpaRepository<Reservation, Integer> {
 
     @Override
+    <S extends Reservation> S save(S entity);
+
+    @Override
     List<Reservation> findAll();
 
     @Override
-    <S extends Reservation> S save(S entity);
+    Optional<Reservation> findById(Integer integer);
 
     @Query("select r from Reservation r where r.hotel.id = :hotelId and r.room.id = :roomId")
     List<Reservation> findByHotelRoom(@Param("hotelId") Integer hotelId,
@@ -28,17 +31,15 @@ public interface ReservationRepository extends JpaRepository<Reservation, Intege
     @Override
     void deleteById(Integer integer);
 
-    @Override
-    Optional<Reservation> findById(Integer integer);
-
     @Modifying
     @Transactional
     @Query("update Reservation r set r.feedback = :feedback where r.id = :reservationId")
     int updateFeedback(@Param("reservationId") Integer reservationId,
-                               @Param("feedback") String feedback);
+                       @Param("feedback") String feedback);
+
     @Modifying
     @Transactional
     @Query("update Reservation r set r.room = :room where r.id = :rId")
     int updateRoom(@Param("rId") Integer rId,
-                               @Param("room") Room room);
+                   @Param("room") Room room);
 }

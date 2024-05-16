@@ -8,7 +8,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.io.IOException;
-import java.util.List;
 import java.util.Optional;
 
 @RestController
@@ -43,7 +42,6 @@ public class HotelController {
         }
     }
 
-    //http://localhost:8080/hotels/46.750222/23.606609/2000
     @GetMapping("/hotels/{latitude}/{longitude}/{radius}")
     public ResponseEntity getHotelsInRange(@PathVariable double latitude, @PathVariable double longitude, @PathVariable double radius) {
         try {

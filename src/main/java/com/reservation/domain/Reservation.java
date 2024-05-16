@@ -5,9 +5,10 @@ import jakarta.persistence.*;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.Objects;
 
 @Entity
-@Table(name="reservations")
+@Table(name = "reservations")
 public class Reservation implements Serializable {
 
     @Id
@@ -15,27 +16,19 @@ public class Reservation implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     @ManyToOne
-    @JoinColumn(name="user_id")
+    @JoinColumn(name = "user_id")
     private User user;
     @ManyToOne
-    @JoinColumn(name="hotel_id")
+    @JoinColumn(name = "hotel_id")
     private Hotel hotel;
     @ManyToOne
-    @JoinColumn(name="room_id")
+    @JoinColumn(name = "room_id")
     private Room room;
 
     private Date startDate;
     private Date endDate;
 
     private String feedback;
-
-    public String getFeedback() {
-        return feedback;
-    }
-
-    public void setFeedback(String feedback) {
-        this.feedback = feedback;
-    }
 
     public Reservation() {
     }
@@ -90,5 +83,18 @@ public class Reservation implements Serializable {
 
     public void setEndDate(Date endDate) {
         this.endDate = endDate;
+    }
+
+    public String getFeedback() {
+        return feedback;
+    }
+
+    public void setFeedback(String feedback) {
+        this.feedback = feedback;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, user, hotel, room, startDate, endDate, feedback);
     }
 }

@@ -2,7 +2,6 @@ package com.reservation.service;
 
 import com.reservation.domain.Hotel;
 import com.reservation.repository.HotelRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
@@ -18,11 +17,15 @@ public class HotelService {
         this.hotelRepository = hotelRepository;
     }
 
-    public List<Hotel> getAll() throws IOException {
+    public List<Hotel> getAll() {
         return hotelRepository.findAll();
     }
 
-    public List<Hotel> getAllInRange(double userLatitude, double userLongitude, double radiusInMeters) throws IOException {
+    public Optional<Hotel> getById(Integer id) {
+        return hotelRepository.findById(id);
+    }
+
+    public List<Hotel> getAllInRange(double userLatitude, double userLongitude, double radiusInMeters) {
         List<Hotel> allHotels = hotelRepository.findAll();
         List<Hotel> hotelsInRange = new ArrayList<>();
         for (Hotel hotel : allHotels) {
@@ -42,10 +45,6 @@ public class HotelService {
         }
 
         return hotelsInRange;
-    }
-
-    public Optional<Hotel> getById(Integer id) throws IOException {
-        return hotelRepository.findById(id);
     }
 
 }

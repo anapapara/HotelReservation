@@ -10,14 +10,15 @@ import java.util.Optional;
 
 @Repository
 public interface HotelRepository extends JpaRepository<Hotel, Integer> {
-    List<Hotel> findAll();
-
     @Override
     <S extends Hotel> List<S> saveAll(Iterable<S> entities);
+
+    List<Hotel> findAll();
+
+    Optional<Hotel> findById(Integer id);
 
     @Override
     <S extends Hotel> long count(Example<S> example);
 
-    Optional<Hotel> findById(Integer id);
 
 }

@@ -1,7 +1,8 @@
-package com.reservation.domain.DTOs;
+package com.reservation.domain.dto;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.Objects;
 
 public class ReservationDTO implements Serializable {
     private Integer id;
@@ -66,5 +67,10 @@ public class ReservationDTO implements Serializable {
 
     public void setEndDate(Date endDate) {
         this.endDate = endDate;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, userId, hotelId, roomId, startDate, endDate);
     }
 }
