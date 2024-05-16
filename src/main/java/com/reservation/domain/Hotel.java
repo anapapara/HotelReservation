@@ -1,20 +1,22 @@
 package com.reservation.domain;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import jakarta.persistence.*;
 
 import java.io.Serializable;
 import java.util.List;
 
+@Entity
+@Table(name = "hotels")
 public class Hotel implements Serializable {
-    @JsonProperty("id")
+    @Id
     private Integer id;
-    @JsonProperty("name")
     private String name;
-    @JsonProperty("latitude")
     private String latitude;
-    @JsonProperty("longitude")
     private String longitude;
-    @JsonProperty("rooms")
+
+    @OneToMany(mappedBy = "hotel", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonManagedReference
     private List<Room> rooms;
 
     public Hotel() {
@@ -38,5 +40,33 @@ public class Hotel implements Serializable {
 
     public Integer getId() {
         return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setLatitude(String latitude) {
+        this.latitude = latitude;
+    }
+
+    public void setLongitude(String longitude) {
+        this.longitude = longitude;
+    }
+
+    public List<Room> getRooms() {
+        return rooms;
+    }
+
+    public void setRooms(List<Room> rooms) {
+        this.rooms = rooms;
     }
 }

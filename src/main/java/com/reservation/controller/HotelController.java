@@ -40,6 +40,7 @@ public class HotelController {
         }
     }
 
+    //http://localhost:8080/hotels/46.750222/23.606609/2000
     @GetMapping("/hotels/{latitude}/{longitude}/{radius}")
     public List<Hotel> getHotelsInRange(@PathVariable double latitude, @PathVariable double longitude, @PathVariable double radius) {
         try {

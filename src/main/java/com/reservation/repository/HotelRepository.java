@@ -1,28 +1,23 @@
 package com.reservation.repository;
 
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.reservation.domain.Hotel;
+import org.springframework.data.domain.Example;
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import java.io.File;
-import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
 
 @Repository
-public class HotelRepository {
-    private static final String FILE_PATH = "data.json";
-    private ObjectMapper objectMapper = new ObjectMapper();
+public interface HotelRepository extends JpaRepository<Hotel, Integer> {
+    public List<Hotel> findAll();
 
-    public List<Hotel> findAll() throws IOException {
-        return objectMapper.readValue(new File(FILE_PATH), new TypeReference<>() {
-        });
-    }
+    @Override
+    <S extends Hotel> List<S> saveAll(Iterable<S> entities);
 
-    public Optional<Hotel> findById(Integer id) throws IOException {
-        List<Hotel> allHotels = objectMapper.readValue(new File(FILE_PATH), new TypeReference<>() {
-        });
-        return allHotels.stream().filter(hotel -> hotel.getId().equals(id)).findFirst();
-    }
+    @Override
+    <S extends Hotel> long count(Example<S> example);
+
+    public Optional<Hotel> findById(Integer id);
+
 }
