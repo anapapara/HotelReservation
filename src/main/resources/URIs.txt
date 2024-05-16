@@ -1,0 +1,23 @@
+HOTEL
+    - GET:  localhost:8080/hotels
+            localhost:8080/hotel/id
+            localhost:8080/hotels/latitude/longitude/radius
+
+
+ROOM
+    - GET:  localhost:8080/rooms/id
+
+
+
+RESERVATION
+    - GET:  localhost:8080/reservations
+    - POST: localhost:8080/reservations with request body  {
+                                                                  "userId": 1,
+                                                                  "hotelId": 2,
+                                                                  "roomId": 4,
+                                                                  "startDate": "2024-05-01",
+                                                                  "endDate": "2024-05-02"
+                                                              }
+    - DELETE localhost:8080/reservations/id
+    - PUT    localhost:8080/reservations/id/roomId              (room update)
+             localhost:8080/reservations/feedback/id/feedback   (feedback update)

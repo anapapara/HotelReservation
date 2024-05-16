@@ -21,33 +21,21 @@ public class HotelController {
 
     @GetMapping("/hotels")
     public ResponseEntity getHotels() {
-        try {
-            return ResponseEntity.accepted().body(hotelService.getAll());
-        } catch (IOException e) {
-            return ResponseEntity.internalServerError().body(e.getMessage());
-        }
+        return ResponseEntity.accepted().body(hotelService.getAll());
     }
 
     @GetMapping("/hotel/{id}")
     public ResponseEntity getHotelById(@PathVariable Integer id) {
-        try {
-            Optional<Hotel> hotelOptional = hotelService.getById(id);
-            if (hotelOptional.isPresent())
-                return ResponseEntity.accepted().body(hotelOptional.get());
-            else {
-                return ResponseEntity.internalServerError().body("There does not exist a hotel with given id");
-            }
-        } catch (IOException e) {
-            return ResponseEntity.internalServerError().body(e.getMessage());
+        Optional<Hotel> hotelOptional = hotelService.getById(id);
+        if (hotelOptional.isPresent())
+            return ResponseEntity.accepted().body(hotelOptional.get());
+        else {
+            return ResponseEntity.internalServerError().body("There does not exist a hotel with given id");
         }
     }
 
     @GetMapping("/hotels/{latitude}/{longitude}/{radius}")
     public ResponseEntity getHotelsInRange(@PathVariable double latitude, @PathVariable double longitude, @PathVariable double radius) {
-        try {
-            return ResponseEntity.accepted().body(hotelService.getAllInRange(latitude, longitude, radius));
-        } catch (IOException e) {
-            return ResponseEntity.internalServerError().body(e.getMessage());
-        }
+        return ResponseEntity.accepted().body(hotelService.getAllInRange(latitude, longitude, radius));
     }
 }

@@ -20,11 +20,7 @@ public class RoomController {
 
     @GetMapping("/rooms/{hotelId}")
     public ResponseEntity getAllByHotelId(@PathVariable Integer hotelId) {
-        try {
-            List<Room> rooms = roomService.findAvailableByHotelId(hotelId);
-            return ResponseEntity.accepted().body(rooms);
-        } catch (IOException e) {
-            return ResponseEntity.internalServerError().body(e.getMessage());
-        }
+        List<Room> rooms = roomService.findAvailableByHotelId(hotelId);
+        return ResponseEntity.accepted().body(rooms);
     }
 }
