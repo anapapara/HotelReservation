@@ -21,7 +21,7 @@ public class Reservation implements Serializable {
     @JoinColumn(name="hotel_id")
     private Hotel hotel;
     @ManyToOne
-    @JoinColumn(name="room_number")
+    @JoinColumn(name="room_id")
     private Room room;
 
     private Date startDate;
@@ -35,6 +35,46 @@ public class Reservation implements Serializable {
         this.hotel = hotel;
         this.room = room;
         this.startDate = startDate;
+        this.endDate = endDate;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    public Hotel getHotel() {
+        return hotel;
+    }
+
+    public void setHotel(Hotel hotel) {
+        this.hotel = hotel;
+    }
+
+    public Room getRoom() {
+        return room;
+    }
+
+    public void setRoom(Room room) {
+        this.room = room;
+    }
+
+    public Date getStartDate() {
+        return startDate;
+    }
+
+    public void setStartDate(Date startDate) {
+        this.startDate = startDate;
+    }
+
+    public Date getEndDate() {
+        return endDate;
+    }
+
+    public void setEndDate(Date endDate) {
         this.endDate = endDate;
     }
 }

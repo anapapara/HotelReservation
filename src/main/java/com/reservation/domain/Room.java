@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 import java.io.Serializable;
+import java.util.Objects;
 
 @Entity
 @Table(name = "rooms")
@@ -82,5 +83,18 @@ public class Room implements Serializable {
 
     public void setHotel(Hotel hotel) {
         this.hotel = hotel;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Room room = (Room) o;
+        return isAvailable == room.isAvailable && Objects.equals(roomNumber, room.roomNumber) && Objects.equals(type, room.type) && Objects.equals(price, room.price) && Objects.equals(hotel, room.hotel);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(roomNumber, type, price, isAvailable, hotel);
     }
 }

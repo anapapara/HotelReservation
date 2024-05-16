@@ -2,6 +2,7 @@ package com.reservation.controller;
 
 import com.reservation.domain.Hotel;
 import com.reservation.service.HotelService;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
@@ -20,33 +21,35 @@ public class HotelController {
 
 
     @GetMapping("/hotels")
-    public List<Hotel> getHotels() {
+    public ResponseEntity getHotels() {
         try {
-            return hotelService.getAll();
+            return ResponseEntity.accepted().body(hotelService.getAll());
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            return ResponseEntity.internalServerError().body(e.getMessage());
         }
     }
 
     @GetMapping("/hotel/{id}")
-    public Hotel getHotelById(@PathVariable Integer id) {
+    public ResponseEntity getHotelById(@PathVariable Integer id) {
         try {
             Optional<Hotel> hotelOptional = hotelService.getById(id);
             if (hotelOptional.isPresent())
-                return hotelOptional.get();
-            else return null;
+                return ResponseEntity.accepted().body(hotelOptional.get());
+            else {
+                return ResponseEntity.internalServerError().body("There does not exist a hotel with given id");
+            }
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            return ResponseEntity.internalServerError().body(e.getMessage());
         }
     }
 
     //http://localhost:8080/hotels/46.750222/23.606609/2000
     @GetMapping("/hotels/{latitude}/{longitude}/{radius}")
-    public List<Hotel> getHotelsInRange(@PathVariable double latitude, @PathVariable double longitude, @PathVariable double radius) {
+    public ResponseEntity getHotelsInRange(@PathVariable double latitude, @PathVariable double longitude, @PathVariable double radius) {
         try {
-            return hotelService.getAllInRange(latitude, longitude, radius);
+            return ResponseEntity.accepted().body(hotelService.getAllInRange(latitude, longitude, radius));
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            return ResponseEntity.internalServerError().body(e.getMessage());
         }
     }
 }
