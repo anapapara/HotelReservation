@@ -10,7 +10,7 @@ import java.util.Optional;
 
 @Repository
 public interface HotelRepository extends JpaRepository<Hotel, Integer> {
-    public List<Hotel> findAll();
+    List<Hotel> findAll();
 
     @Override
     <S extends Hotel> List<S> saveAll(Iterable<S> entities);
@@ -18,6 +18,6 @@ public interface HotelRepository extends JpaRepository<Hotel, Integer> {
     @Override
     <S extends Hotel> long count(Example<S> example);
 
-    public Optional<Hotel> findById(Integer id);
+    Optional<Hotel> findById(Integer id);
 
 }
