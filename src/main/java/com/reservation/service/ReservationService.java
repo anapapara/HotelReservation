@@ -13,7 +13,9 @@ import exception.ReservationException;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
+import java.time.Duration;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -44,6 +46,29 @@ public class ReservationService {
         return reservationsDTO;
     }
 
+    public Optional<Reservation> findById(Integer id) {
+        return reservationRepository.findById(id);
+    }
+
+    public Reservation updateReservation(ReservationDTO reservationDTO, Integer id) throws ReservationException {
+        Duration duration = Duration.between(new Date().toInstant(), reservationDTO.getStartDate().toInstant());
+        long differenceInMinutes = Math.abs(duration.toMinutes());
+        if (differenceInMinutes < 120) {
+            Optional<Reservation> reservation = findById(id);
+            if (reservation.isPresent()) {
+                Optional<Room> newRoom = roomRepository.findById(reservationDTO.getRoomId());
+                if (newRoom.isPresent()) {
+                    reservation.get().setRoom(newRoom.get());
+                    return save(reservation.get());
+                } else {
+                    throw new ReservationException("New room you selected does not exist!");
+                }
+            }
+            throw new ReservationException("Reservation you selected to modify does not exist!");
+        } else {
+            throw new ReservationException("You can no longer modify the reservation!");
+        }
+    }
 
     public Reservation save(Reservation reservation) throws ReservationException {
         List<Reservation> reservationsRoom = reservationRepository.findByHotelRoom(reservation.getHotel().getId(), reservation.getRoom().getId());
@@ -75,8 +100,22 @@ public class ReservationService {
     }
 
     private ReservationDTO reservationToDTO(Reservation reservation) {
-        return new ReservationDTO(reservation.getUser().getId(), reservation.getHotel().getId(),
-                reservation.getRoom().getId(), reservation.getStartDate(), reservation.getEndDate());
+        return new ReservationDTO(reservation.getUser().getId(), reservation.getHotel().getId(), reservation.getRoom().getId(), reservation.getStartDate(), reservation.getEndDate());
     }
 
+    public Reservation deleteById(Integer id) throws ReservationException {
+        Optional<Reservation> reservation = reservationRepository.findById(id);
+        if (reservation.isPresent()) {
+            Duration duration = Duration.between(new Date().toInstant(), reservation.get().getStartDate().toInstant());
+            long differenceInMinutes = Math.abs(duration.toMinutes());
+            if (differenceInMinutes < 120) {
+                reservationRepository.deleteById(id);
+                return reservation.get();
+            } else {
+                throw new ReservationException("You can no longer cancel the reservation!");
+            }
+        } else {
+            throw new ReservationException("The reservation you want to cancel does not exist!");
+        }
+    }
 }
