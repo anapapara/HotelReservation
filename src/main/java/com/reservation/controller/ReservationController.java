@@ -34,7 +34,7 @@ public class ReservationController {
     }
 
     /**
-     * Retrieve reservation by user id
+     * Retrieve reservations by user id
      *
      * @param id The id of the user to search reservations for
      * @return ResponseEntity containing a list of Reservations

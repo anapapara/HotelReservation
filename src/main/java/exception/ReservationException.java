@@ -1,5 +1,8 @@
 package exception;
 
+/**
+ * Custom class for exceptions
+ */
 public class ReservationException extends Exception {
     private final String message;
 
