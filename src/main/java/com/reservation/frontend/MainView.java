@@ -33,6 +33,10 @@ import java.time.ZoneId;
 import java.util.Date;
 import java.util.List;
 
+/**
+ * Vaadin view for login page
+ * accessed <a href="http://localhost:8080/main">...</a>
+ */
 @Route("main")
 public class MainView extends VerticalLayout implements BeforeEnterObserver {
 
@@ -47,6 +51,9 @@ public class MainView extends VerticalLayout implements BeforeEnterObserver {
     private Double currentLatitude = null;
     private Double currentLongitude = null;
 
+    /**
+     * Constructor containing web elements initialization
+     */
     public MainView() {
         webClient = (WebClient) VaadinSession.getCurrent().getAttribute("webClient");
         if (webClient == null) webClient = WebClient.create();
@@ -79,6 +86,11 @@ public class MainView extends VerticalLayout implements BeforeEnterObserver {
         }
     }
 
+    /**
+     * Arrange elements in layouts
+     *
+     * @return the main layout for entire page
+     */
     private HorizontalLayout arrangeLayouts() {
         rangeField = new TextField();
         rangeField.setPlaceholder("Enter range in meters");
@@ -109,6 +121,9 @@ public class MainView extends VerticalLayout implements BeforeEnterObserver {
         return mainLayout;
     }
 
+    /**
+     * Create the hotels grid
+     */
     private void createHotelGrid() {
         hotelGrid = new Grid<>(Hotel.class);
         hotelGrid.setColumns("name");
@@ -119,6 +134,9 @@ public class MainView extends VerticalLayout implements BeforeEnterObserver {
         }));
     }
 
+    /**
+     * Create the rooms grid
+     */
     private void createRoomGrid() {
         roomGrid = new Grid<>(Room.class);
         roomGrid.setColumns("roomNumber", "type", "price");
@@ -126,6 +144,9 @@ public class MainView extends VerticalLayout implements BeforeEnterObserver {
         roomGrid.addItemClickListener(event -> openReservationDialog());
     }
 
+    /**
+     * Create the reservations grid
+     */
     private void createReservationGrid() {
         reservationGrid = new Grid<>(Reservation.class);
         reservationGrid.setColumns("hotel.name", "room.roomNumber", "startDate", "endDate", "feedback");
@@ -134,6 +155,9 @@ public class MainView extends VerticalLayout implements BeforeEnterObserver {
         reservationGrid.addComponentColumn(reservation -> new Button("Add feedback", click -> openUpdateDialog(reservation)));
     }
 
+    /**
+     * Populate the hotels grid
+     */
     private void loadHotels() {
         List<Hotel> hotels = webClient.get()
                 .uri("http://localhost:8080/hotels")
@@ -144,6 +168,9 @@ public class MainView extends VerticalLayout implements BeforeEnterObserver {
         hotelGrid.setItems(hotels);
     }
 
+    /**
+     * Populate the rooms grid
+     */
     private List<Room> getRooms(Integer hotelId) {
         return webClient.get()
                 .uri("http://localhost:8080/rooms/" + hotelId)
@@ -153,6 +180,9 @@ public class MainView extends VerticalLayout implements BeforeEnterObserver {
                 .block();
     }
 
+    /**
+     * Populate the reservations grid
+     */
     private void loadReservations() {
         List<Reservation> reservations = webClient.get()
                 .uri("http://localhost:8080/reservations/user/" + loggedUser.getId())
@@ -164,6 +194,9 @@ public class MainView extends VerticalLayout implements BeforeEnterObserver {
         reservationGrid.setItems(reservations);
     }
 
+    /**
+     * Populate the filtered grid by range and current user location
+     */
     private void loadHotelsInRange() {
         String rangeString = rangeField.getValue();
         if (rangeString.isEmpty()) {
@@ -206,7 +239,11 @@ public class MainView extends VerticalLayout implements BeforeEnterObserver {
         }
     }
 
-
+    /**
+     * Update reservation by adding feedback
+     *
+     * @param reservation The reservation to be updated
+     */
     private void updateReservation(Reservation reservation) {
         ResponseEntity<StringResponse> responseEntity = webClient.put()
                 .uri("http://localhost:8080/reservations/feedback/" + reservation.getId() + "/" + reservation.getFeedback())
@@ -228,6 +265,11 @@ public class MainView extends VerticalLayout implements BeforeEnterObserver {
         }
     }
 
+    /**
+     * Delete reservation
+     *
+     * @param reservation The reservation to be deleted
+     */
     private void cancelReservation(Reservation reservation) {
         ResponseEntity<ReservationResponse> responseEntity = webClient.delete()
                 .uri("http://localhost:8080/reservations/" + reservation.getId())
@@ -248,6 +290,11 @@ public class MainView extends VerticalLayout implements BeforeEnterObserver {
 
     }
 
+    /**
+     * Open new dialog for requesting feedback
+     *
+     * @param reservation The reservation to be updated
+     */
     private void openUpdateDialog(Reservation reservation) {
         Dialog dialog = new Dialog();
         TextArea feedbackArea = new TextArea("Feedback", "...");
@@ -263,7 +310,9 @@ public class MainView extends VerticalLayout implements BeforeEnterObserver {
         dialog.add(feedbackArea, updateButton);
         dialog.open();
     }
-
+    /**
+     * Open new dialog for requesting information about new reservation
+     */
     private void openReservationDialog() {
         Dialog dialog = new Dialog();
 

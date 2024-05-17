@@ -18,6 +18,9 @@ import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * Class for managing reservation-related logic
+ */
 @Service
 public class ReservationService {
     private final ReservationRepository reservationRepository;
@@ -32,6 +35,15 @@ public class ReservationService {
         this.roomRepository = roomRepository;
     }
 
+    /**
+     * Saves a new reservation
+     *
+     * @param reservation Reservation to be saved
+     * @return The reservation that was saved
+     * @throws ReservationException Exception with specific error message for the cases when
+     *                              room is not available in given interval
+     *                              or room is not available in general
+     */
     public Reservation save(Reservation reservation) throws ReservationException {
         List<Reservation> reservationsRoom = reservationRepository.findByHotelRoom(reservation.getHotel().getId(), reservation.getRoom().getId());
         if (reservation.getRoom().getIsAvailable()) {
@@ -45,6 +57,11 @@ public class ReservationService {
         throw new ReservationException("Room is not available");
     }
 
+    /**
+     * Finds all reservations
+     *
+     * @return List of DTOs for reservations
+     */
     public List<ReservationDTO> getAllDTO() {
         List<Reservation> allReservations = reservationRepository.findAll();
         List<ReservationDTO> reservationsDTO = new ArrayList<>();
@@ -58,6 +75,17 @@ public class ReservationService {
         return reservationRepository.findById(id);
     }
 
+    /**
+     * Update room in a reservation
+     *
+     * @param id        id of reservation to be updated
+     * @param newRoomId The id of new room
+     * @return Integer referring number of entities that have been updated
+     * @throws ReservationException Exception with specific error message for the cases when
+     *                              the new room is not a valid one
+     *                              the reservation can no longer be modified
+     *                              the id reservation does not exist
+     */
     public int updateRoom(Integer id, Integer newRoomId) throws ReservationException {
         Optional<Reservation> reservation = findById(id);
         if (reservation.isPresent()) {
@@ -79,6 +107,16 @@ public class ReservationService {
 
     }
 
+    /**
+     * Update feedback for a reservation
+     *
+     * @param reservationId id of reservation to be updated
+     * @param feedback      The new feedback to be added
+     * @return Integer referring number of entities that have been updated
+     * @throws ReservationException Exception with specific error message for the cases when
+     *                              the end date of reservation has not passed yet
+     *                              the id reservation does not exist
+     */
     public int updateFeedback(Integer reservationId, String feedback) throws ReservationException {
         Optional<Reservation> reservation = reservationRepository.findById(reservationId);
         if (reservation.isPresent()) {
@@ -91,6 +129,15 @@ public class ReservationService {
         }
     }
 
+    /**
+     * Delete reservation
+     *
+     * @param id id of reservation to be deleted
+     * @return Reservation just deleted
+     * @throws ReservationException Exception with specific error message for the cases when
+     *                              the reservation can no longer be canceled
+     *                              the id reservation does not exist
+     */
     public Reservation deleteById(Integer id) throws ReservationException {
         Optional<Reservation> reservation = reservationRepository.findById(id);
         if (reservation.isPresent()) {
@@ -107,6 +154,16 @@ public class ReservationService {
         }
     }
 
+    /**
+     * Transform ReservationDTO into Reservation
+     *
+     * @param reservationDTO reservation DTO to be transformed
+     * @return Reservation
+     * @throws ReservationException Exception with specific error message for the cases when
+     *                              the user id contained bt DTO does not exist
+     *                              the hotel id contained bt DTO does not exist
+     *                              the room id contained bt DTO does not exist
+     */
     public Reservation reservationFromDTO(ReservationDTO reservationDTO) throws ReservationException {
         Optional<User> user = userRepository.findById(reservationDTO.getUserId());
         Optional<Hotel> hotel = hotelRepository.findById(reservationDTO.getHotelId());
@@ -123,6 +180,12 @@ public class ReservationService {
         return new Reservation(user.get(), hotel.get(), room.get(), reservationDTO.getStartDate(), reservationDTO.getEndDate());
     }
 
+    /**
+     * Transform Reservation to ReservationDTO
+     *
+     * @param reservation reservation to be transformed into DTO
+     * @return The DTO
+     */
     private ReservationDTO reservationToDTO(Reservation reservation) {
         ReservationDTO reservationDTO = new ReservationDTO(reservation.getUser().getId(), reservation.getHotel().getId(), reservation.getRoom().getId(), reservation.getStartDate(), reservation.getEndDate());
         reservationDTO.setId(reservation.getId());

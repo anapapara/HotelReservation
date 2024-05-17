@@ -9,6 +9,9 @@ import java.io.Serializable;
 import java.util.List;
 import java.util.Objects;
 
+/**
+ * Class for API responses containing a list of ReservationDTOs
+ */
 public class ReservationDTOListResponse implements Serializable {
     @JsonProperty("body")
     private List<ReservationDTO> body;
@@ -20,6 +23,13 @@ public class ReservationDTOListResponse implements Serializable {
     private ReservationDTOListResponse() {
     }
 
+    /**
+     * Constructor that creates a response with body, empty error and OK status
+     * * or with empty body, error message and ACCEPTED status
+     *
+     * @param body  The list of reservationDTOs
+     * @param error The error message in case of error
+     */
     @JsonCreator(mode = JsonCreator.Mode.PROPERTIES)
     public ReservationDTOListResponse(@JsonProperty("body") List<ReservationDTO> body, @JsonProperty("error") String error) {
         if (error == null) {

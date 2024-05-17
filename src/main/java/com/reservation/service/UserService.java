@@ -4,6 +4,9 @@ import com.reservation.domain.User;
 import com.reservation.repository.UserRepository;
 import org.springframework.stereotype.Service;
 
+/**
+ * Class for managing user-related logic
+ */
 @Service
 public class UserService {
     private final UserRepository userRepository;

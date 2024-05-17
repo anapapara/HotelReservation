@@ -7,6 +7,9 @@ import jakarta.persistence.*;
 import java.io.Serializable;
 import java.util.Objects;
 
+/**
+ * Class for storing user-related information
+ */
 @Entity
 @Table(name = "users")
 public class User implements Serializable {

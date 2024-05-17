@@ -7,6 +7,9 @@ import java.io.Serializable;
 import java.util.Date;
 import java.util.Objects;
 
+/**
+ * DTO for Reservation class containing dates and just ids of hotel, user and room
+ */
 public class ReservationDTO implements Serializable {
     @JsonProperty("id")
     private Integer id;

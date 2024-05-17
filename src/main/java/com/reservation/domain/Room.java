@@ -8,6 +8,9 @@ import jakarta.persistence.*;
 import java.io.Serializable;
 import java.util.Objects;
 
+/**
+ * Class for storing rooms-related information
+ */
 @Entity
 @Table(name = "rooms")
 public class Room implements Serializable {

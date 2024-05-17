@@ -7,6 +7,9 @@ import org.springframework.http.HttpStatus;
 import java.io.Serializable;
 import java.util.Objects;
 
+/**
+ * Class for API responses containing a String
+ */
 public class StringResponse implements Serializable {
     @JsonProperty("body")
     private String body;
@@ -18,6 +21,13 @@ public class StringResponse implements Serializable {
     private StringResponse() {
     }
 
+    /**
+     * Constructor that creates a response with body, empty error and OK status
+     * or with empty body, error message and ACCEPTED status
+     *
+     * @param body  The body of response - String
+     * @param error The error message in case of error
+     */
     @JsonCreator(mode = JsonCreator.Mode.PROPERTIES)
     public StringResponse(@JsonProperty("body") String body, @JsonProperty("error") String error) {
         if (error == null) {

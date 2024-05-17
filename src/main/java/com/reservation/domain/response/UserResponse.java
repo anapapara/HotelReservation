@@ -8,6 +8,9 @@ import org.springframework.http.HttpStatus;
 import java.io.Serializable;
 import java.util.Objects;
 
+/**
+ * Class for API responses containing User entity
+ */
 public class UserResponse implements Serializable {
     @JsonProperty("body")
     private User body;
@@ -19,6 +22,13 @@ public class UserResponse implements Serializable {
     private UserResponse() {
     }
 
+    /**
+     * Constructor that creates a response with body, empty error and OK status
+     * or with empty body, error message and ACCEPTED status
+     *
+     * @param body  The body of response - User entity
+     * @param error The error message in case of error
+     */
     @JsonCreator(mode = JsonCreator.Mode.PROPERTIES)
     public UserResponse(@JsonProperty("body") User body, @JsonProperty("error") String error) {
         if (error == null) {

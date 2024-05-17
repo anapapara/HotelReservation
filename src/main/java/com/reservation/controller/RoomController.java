@@ -9,6 +9,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
+/**
+ * Rest controller for managing room-related operations.
+ */
 @RestController
 public class RoomController {
     private final RoomService roomService;
@@ -17,6 +20,12 @@ public class RoomController {
         this.roomService = roomService;
     }
 
+    /**
+     * Retrieve all rooms for a given hotel
+     *
+     * @param hotelId The id of the hotel to search rooms for
+     * @return ResponseEntity containing a list of Rooms
+     */
     @GetMapping("/rooms/{hotelId}")
     public ResponseEntity<List<Room>> getAllByHotelId(@PathVariable Integer hotelId) {
         List<Room> rooms = roomService.findAvailableByHotelId(hotelId);

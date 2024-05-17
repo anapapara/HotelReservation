@@ -13,11 +13,18 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.reactive.function.client.WebClient;
 
+/**
+ * Vaadin view for login page
+ * accessed <a href="http://localhost:8080/login">...</a>
+ */
 @Route("login")
 public class LoginView extends VerticalLayout {
 
     private transient WebClient webClient;
 
+    /**
+     * Constructor of LoginView containing web elements initialization
+     */
     public LoginView() {
         webClient = (WebClient) VaadinSession.getCurrent().getAttribute("webClient");
         if (webClient == null) webClient = WebClient.create();

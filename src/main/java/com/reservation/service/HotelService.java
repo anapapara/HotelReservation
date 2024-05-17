@@ -4,11 +4,13 @@ import com.reservation.domain.Hotel;
 import com.reservation.repository.HotelRepository;
 import org.springframework.stereotype.Service;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * Class for managing hotel-related logic
+ */
 @Service
 public class HotelService {
     private final HotelRepository hotelRepository;
@@ -25,6 +27,14 @@ public class HotelService {
         return hotelRepository.findById(id);
     }
 
+    /**
+     * Find all hotels in a range
+     *
+     * @param userLatitude   User latitude coordinate
+     * @param userLongitude  User longitude coordinate
+     * @param radiusInMeters Radius measured in meters of the range to search hotels
+     * @return List of hotel in the given range
+     */
     public List<Hotel> getAllInRange(double userLatitude, double userLongitude, double radiusInMeters) {
         List<Hotel> allHotels = hotelRepository.findAll();
         List<Hotel> hotelsInRange = new ArrayList<>();

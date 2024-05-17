@@ -6,6 +6,9 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+/**
+ * Class for managing room-related logic
+ */
 @Service
 public class RoomService {
     private final RoomRepository roomRepository;

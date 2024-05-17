@@ -13,6 +13,12 @@ import java.util.Optional;
 public interface RoomRepository extends JpaRepository<Room, Integer> {
     Optional<Room> findById(Integer id);
 
+    /**
+     * Get all rooms that are available in a hotel
+     *
+     * @param hotelId id of hotel to search rooms for
+     * @return List of rooms
+     */
     @Query("select r from Room r where r.hotel.id = :hotelId and r.isAvailable = true")
     List<Room> findAllAvailableByHotelId(@Param("hotelId") Integer hotelId);
 }

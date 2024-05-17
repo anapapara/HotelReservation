@@ -11,10 +11,13 @@ import org.springframework.stereotype.Component;
 import java.io.File;
 import java.util.List;
 
+/**
+ * Class for loading initial data from JSON and populate database.
+ */
 @Component
 public class DataLoader implements ApplicationRunner {
-
     private final HotelRepository hotelRepository;
+    private static final String FILE_NAME = "data.json";
 
     public DataLoader(HotelRepository hotelRepository) {
         this.hotelRepository = hotelRepository;
@@ -25,7 +28,7 @@ public class DataLoader implements ApplicationRunner {
         if (hotelRepository.count() == 0) {
             ObjectMapper mapper = new ObjectMapper();
             try {
-                List<Hotel> hotels = mapper.readValue(new File("data.json"), new TypeReference<>() {
+                List<Hotel> hotels = mapper.readValue(new File(FILE_NAME), new TypeReference<>() {
                 });
                 hotelRepository.saveAll(hotels);
                 System.out.println("Database has been populated.");

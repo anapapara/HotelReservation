@@ -8,6 +8,9 @@ import org.springframework.http.HttpStatus;
 import java.io.Serializable;
 import java.util.Objects;
 
+/**
+ * Class for API responses containing Hotel entity
+ */
 public class HotelResponse implements Serializable {
     @JsonProperty("body")
     private Hotel body;
@@ -19,6 +22,13 @@ public class HotelResponse implements Serializable {
     private HotelResponse() {
     }
 
+    /**
+     * Constructor for HotelResponse that creates a response with body, empty error and OK status
+     * or with empty body, error message and ACCEPTED status
+     *
+     * @param body  The body of response - hotel entity
+     * @param error The error message in case of error
+     */
     @JsonCreator(mode = JsonCreator.Mode.PROPERTIES)
     public HotelResponse(@JsonProperty("body") Hotel body, @JsonProperty("error") String error) {
         if (error == null) {

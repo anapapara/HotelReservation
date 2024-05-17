@@ -8,6 +8,9 @@ import java.io.Serializable;
 import java.util.Date;
 import java.util.Objects;
 
+/**
+ * Class for storing reservation-related information
+ */
 @Entity
 @Table(name = "reservations")
 public class Reservation implements Serializable {
