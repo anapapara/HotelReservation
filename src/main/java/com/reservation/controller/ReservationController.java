@@ -1,13 +1,16 @@
 package com.reservation.controller;
 
-import com.reservation.domain.dto.ReservationDTO;
 import com.reservation.domain.Reservation;
+import com.reservation.domain.dto.ReservationDTO;
+import com.reservation.domain.response.ReservationDTOListResponse;
+import com.reservation.domain.response.ReservationResponse;
+import com.reservation.domain.response.StringResponse;
 import com.reservation.service.ReservationService;
 import exception.ReservationException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.io.IOException;
+import java.util.List;
 
 @RestController
 public class ReservationController {
@@ -18,30 +21,32 @@ public class ReservationController {
     }
 
     @GetMapping("/reservations")
-    public ResponseEntity getReservations() {
-        try {
-            return ResponseEntity.accepted().body(reservationService.getAllDTO());
-        } catch (IOException e) {
-            return ResponseEntity.internalServerError().body(e.getMessage());
-        }
+    public ReservationDTOListResponse getReservationsDTO() {
+        return new ReservationDTOListResponse(reservationService.getAllDTO(), null);
+    }
+
+    @GetMapping("/reservations/user/{id}")
+    public ResponseEntity<List<Reservation>> getReservationsByUser(@PathVariable Integer id) {
+        return ResponseEntity.accepted().body(reservationService.getAllByUser(id));
     }
 
     @PostMapping("/reservations")
-    public ResponseEntity newReservation(@RequestBody ReservationDTO reservationDTO) {
+    public ReservationResponse newReservation(@RequestBody ReservationDTO reservationDTO) {
         try {
             Reservation reservation = reservationService.reservationFromDTO(reservationDTO);
-            return ResponseEntity.accepted().body(reservationService.save(reservation));
+            return new ReservationResponse(reservationService.save(reservation), null);
         } catch (ReservationException e) {
-            return ResponseEntity.internalServerError().body(e.getMessage());
+            return new ReservationResponse(null, e.getMessage());
         }
     }
 
+
     @DeleteMapping("/reservations/{id}")
-    public ResponseEntity cancelReservation(@PathVariable Integer id) {
+    public ReservationResponse cancelReservation(@PathVariable Integer id) {
         try {
-            return ResponseEntity.accepted().body(reservationService.deleteById(id));
+            return new ReservationResponse(reservationService.deleteById(id), null);
         } catch (ReservationException e) {
-            return ResponseEntity.internalServerError().body(e.getMessage());
+            return new ReservationResponse(null, e.getMessage());
         }
     }
 
@@ -60,16 +65,16 @@ public class ReservationController {
     }
 
     @PutMapping("/reservations/feedback/{id}/{feedback}")
-    public ResponseEntity<String> updateFeedback(@PathVariable Integer id, @PathVariable String feedback) {
+    public StringResponse updateFeedback(@PathVariable Integer id, @PathVariable String feedback) {
         try {
             int updatedRows = reservationService.updateFeedback(id, feedback);
             if (updatedRows > 0) {
-                return ResponseEntity.accepted().body("Successfully updated!");
+                return new StringResponse("Successfully updated!", null);
             } else {
-                return ResponseEntity.badRequest().body("No reservation was updated!");
+                return new StringResponse(null, "Failed to update reservation!");
             }
         } catch (ReservationException e) {
-            return ResponseEntity.internalServerError().body(e.getMessage());
+            return new StringResponse(null, e.getMessage());
         }
     }
 }

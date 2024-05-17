@@ -1,10 +1,10 @@
 package com.reservation.service;
 
-import com.reservation.domain.dto.ReservationDTO;
 import com.reservation.domain.Hotel;
 import com.reservation.domain.Reservation;
 import com.reservation.domain.Room;
 import com.reservation.domain.User;
+import com.reservation.domain.dto.ReservationDTO;
 import com.reservation.repository.HotelRepository;
 import com.reservation.repository.ReservationRepository;
 import com.reservation.repository.RoomRepository;
@@ -12,7 +12,6 @@ import com.reservation.repository.UserRepository;
 import exception.ReservationException;
 import org.springframework.stereotype.Service;
 
-import java.io.IOException;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Date;
@@ -46,7 +45,7 @@ public class ReservationService {
         throw new ReservationException("Room is not available");
     }
 
-    public List<ReservationDTO> getAllDTO() throws IOException {
+    public List<ReservationDTO> getAllDTO() {
         List<Reservation> allReservations = reservationRepository.findAll();
         List<ReservationDTO> reservationsDTO = new ArrayList<>();
         for (Reservation reservation : allReservations) {
@@ -125,6 +124,13 @@ public class ReservationService {
     }
 
     private ReservationDTO reservationToDTO(Reservation reservation) {
-        return new ReservationDTO(reservation.getId(), reservation.getUser().getId(), reservation.getHotel().getId(), reservation.getRoom().getId(), reservation.getStartDate(), reservation.getEndDate());
+        ReservationDTO reservationDTO = new ReservationDTO(reservation.getUser().getId(), reservation.getHotel().getId(), reservation.getRoom().getId(), reservation.getStartDate(), reservation.getEndDate());
+        reservationDTO.setId(reservation.getId());
+        return reservationDTO;
+    }
+
+
+    public List<Reservation> getAllByUser(Integer userId) {
+        return reservationRepository.findAllByUser(userId);
     }
 }

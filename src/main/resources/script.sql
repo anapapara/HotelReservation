@@ -2,6 +2,7 @@ create table users
 (
     id   integer primary key,
     name varchar
+    personal_code varchar
 );
 create table rooms
 (

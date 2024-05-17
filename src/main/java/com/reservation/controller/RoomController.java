@@ -7,7 +7,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.io.IOException;
 import java.util.List;
 
 @RestController
@@ -19,7 +18,7 @@ public class RoomController {
     }
 
     @GetMapping("/rooms/{hotelId}")
-    public ResponseEntity getAllByHotelId(@PathVariable Integer hotelId) {
+    public ResponseEntity<List<Room>> getAllByHotelId(@PathVariable Integer hotelId) {
         List<Room> rooms = roomService.findAvailableByHotelId(hotelId);
         return ResponseEntity.accepted().body(rooms);
     }

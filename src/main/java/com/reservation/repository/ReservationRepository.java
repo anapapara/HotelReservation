@@ -42,4 +42,7 @@ public interface ReservationRepository extends JpaRepository<Reservation, Intege
     @Query("update Reservation r set r.room = :room where r.id = :rId")
     int updateRoom(@Param("rId") Integer rId,
                    @Param("room") Room room);
+
+    @Query("select r from Reservation r where r.user.id = :userId")
+    List<Reservation> findAllByUser(@Param("userId") Integer userId);
 }
