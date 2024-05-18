@@ -81,5 +81,6 @@ The user can directly call the endpoints.
 - **SQLite** <br> SQLite was chosen as the database management system to store application data.
 - **Vaadin 20** <br> Vaadin was used to build the web-based user interface, enabling users to interact with the system in a more friendly way.
 - **JUnit 5** <br> JUnit was user for creating tests.
+- **Lombok** <br> Lombok was utilized for auto generation of getters setters and constructor for domain entities.
 
 

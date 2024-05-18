@@ -3,6 +3,9 @@ package com.reservation.domain;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -13,6 +16,9 @@ import java.util.Objects;
  */
 @Entity
 @Table(name = "reservations")
+@Getter
+@Setter
+@NoArgsConstructor
 public class Reservation implements Serializable {
 
     @Id
@@ -43,9 +49,6 @@ public class Reservation implements Serializable {
     @JsonProperty("feedback")
     private String feedback;
 
-    public Reservation() {
-    }
-
     @JsonCreator(mode = JsonCreator.Mode.PROPERTIES)
     public Reservation(@JsonProperty("user") User user, @JsonProperty("hotel") Hotel hotel,
                        @JsonProperty("room") Room room, @JsonProperty("startDate") Date startDate,
@@ -55,58 +58,6 @@ public class Reservation implements Serializable {
         this.room = room;
         this.startDate = startDate;
         this.endDate = endDate;
-    }
-
-    public Integer getId() {
-        return id;
-    }
-
-    public User getUser() {
-        return user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
-    }
-
-    public Hotel getHotel() {
-        return hotel;
-    }
-
-    public void setHotel(Hotel hotel) {
-        this.hotel = hotel;
-    }
-
-    public Room getRoom() {
-        return room;
-    }
-
-    public void setRoom(Room room) {
-        this.room = room;
-    }
-
-    public Date getStartDate() {
-        return startDate;
-    }
-
-    public void setStartDate(Date startDate) {
-        this.startDate = startDate;
-    }
-
-    public Date getEndDate() {
-        return endDate;
-    }
-
-    public void setEndDate(Date endDate) {
-        this.endDate = endDate;
-    }
-
-    public String getFeedback() {
-        return feedback;
-    }
-
-    public void setFeedback(String feedback) {
-        this.feedback = feedback;
     }
 
     @Override

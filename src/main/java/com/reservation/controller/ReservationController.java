@@ -6,7 +6,7 @@ import com.reservation.domain.response.ReservationDTOListResponse;
 import com.reservation.domain.response.ReservationResponse;
 import com.reservation.domain.response.StringResponse;
 import com.reservation.service.ReservationService;
-import exception.ReservationException;
+import com.reservation.exception.ReservationException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 

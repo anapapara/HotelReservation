@@ -6,7 +6,7 @@ import com.reservation.domain.Room;
 import com.reservation.domain.User;
 import com.reservation.domain.dto.ReservationDTO;
 import com.reservation.service.ReservationService;
-import exception.ReservationException;
+import com.reservation.exception.ReservationException;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

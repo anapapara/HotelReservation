@@ -3,6 +3,9 @@ package com.reservation.domain.response;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.reservation.domain.Reservation;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.springframework.http.HttpStatus;
 
 import java.io.Serializable;
@@ -11,6 +14,9 @@ import java.util.Objects;
 /**
  * Class for API responses containing Reservation entity
  */
+@Getter
+@Setter
+@NoArgsConstructor
 public class ReservationResponse implements Serializable {
     @JsonProperty("body")
     private Reservation body;
@@ -18,9 +24,6 @@ public class ReservationResponse implements Serializable {
     private String error;
     @JsonProperty("status")
     private HttpStatus status;
-
-    private ReservationResponse() {
-    }
 
     /**
      * Constructor that creates a response with body, empty error and OK status
@@ -40,30 +43,6 @@ public class ReservationResponse implements Serializable {
             this.body = null;
             this.status = HttpStatus.ACCEPTED;
         }
-    }
-
-    public Reservation getBody() {
-        return body;
-    }
-
-    public void setBody(Reservation body) {
-        this.body = body;
-    }
-
-    public String getError() {
-        return error;
-    }
-
-    public void setError(String error) {
-        this.error = error;
-    }
-
-    public HttpStatus getStatus() {
-        return status;
-    }
-
-    public void setStatus(HttpStatus status) {
-        this.status = status;
     }
 
     @Override

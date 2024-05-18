@@ -1,4 +1,4 @@
-package exception;
+package com.reservation.exception;
 
 /**
  * Custom class for exceptions

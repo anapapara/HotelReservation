@@ -11,7 +11,7 @@ ROOM
 
 RESERVATION
     - GET:  localhost:8080/reservations
-    - POST: localhost:8080/reservations with request body  {
+    - POST: localhost:8080/reservations with request body like {
                                                                   "userId": 1,
                                                                   "hotelId": 2,
                                                                   "roomId": 4,

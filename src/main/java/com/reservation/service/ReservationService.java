@@ -9,7 +9,7 @@ import com.reservation.repository.HotelRepository;
 import com.reservation.repository.ReservationRepository;
 import com.reservation.repository.RoomRepository;
 import com.reservation.repository.UserRepository;
-import exception.ReservationException;
+import com.reservation.exception.ReservationException;
 import org.springframework.stereotype.Service;
 
 import java.time.Duration;
@@ -53,7 +53,7 @@ public class ReservationService {
             throw new ReservationException("Invalid dates! Reservation dates must be in future!");
         }
         List<Reservation> reservationsRoom = reservationRepository.findByHotelRoom(reservation.getHotel().getId(), reservation.getRoom().getId());
-        if (reservation.getRoom().getIsAvailable()) {
+        if (reservation.getRoom().isAvailable()) {
             for (Reservation r : reservationsRoom) {
                 if (!(r.getEndDate().before(reservation.getStartDate()) || r.getStartDate().after(reservation.getEndDate()))) {
                     throw new ReservationException("Room is not available in selected interval");

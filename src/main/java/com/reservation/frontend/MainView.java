@@ -93,8 +93,8 @@ public class MainView extends VerticalLayout implements BeforeEnterObserver {
      */
     private HorizontalLayout arrangeLayouts() {
         rangeField = new TextField();
-        rangeField.setPlaceholder("Enter range in meters");
-        rangeField.setWidth("200px");
+        rangeField.setPlaceholder("Enter range in kilometers");
+        rangeField.setWidth("250px");
 
         Button applyFilterButton = new Button("Search hotels in range", click -> loadHotelsInRange());
         Button removeFilterButton = new Button("Remove filtering", click -> {
@@ -205,6 +205,7 @@ public class MainView extends VerticalLayout implements BeforeEnterObserver {
         }
         try {
             double range = Double.parseDouble(rangeString);
+            double rangeInMeters = range * 1000;
 
             UI.getCurrent().getPage().executeJs("""
                         return new Promise((resolve, reject) => {
@@ -224,7 +225,7 @@ public class MainView extends VerticalLayout implements BeforeEnterObserver {
                 currentLongitude = coordinates.getNumber(1);
                 if (currentLatitude != null) {
                     List<Hotel> hotels = webClient.get()
-                            .uri("http://localhost:8080/hotels/" + currentLatitude + "/" + currentLongitude + "/" + range)
+                            .uri("http://localhost:8080/hotels/" + currentLatitude + "/" + currentLongitude + "/" + rangeInMeters)
                             .retrieve()
                             .bodyToFlux(Hotel.class)
                             .collectList()
@@ -310,6 +311,7 @@ public class MainView extends VerticalLayout implements BeforeEnterObserver {
         dialog.add(feedbackArea, updateButton);
         dialog.open();
     }
+
     /**
      * Open new dialog for requesting information about new reservation
      */

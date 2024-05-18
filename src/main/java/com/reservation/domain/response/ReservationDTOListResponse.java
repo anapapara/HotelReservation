@@ -3,6 +3,9 @@ package com.reservation.domain.response;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.reservation.domain.dto.ReservationDTO;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.springframework.http.HttpStatus;
 
 import java.io.Serializable;
@@ -12,6 +15,9 @@ import java.util.Objects;
 /**
  * Class for API responses containing a list of ReservationDTOs
  */
+@Getter
+@Setter
+@NoArgsConstructor
 public class ReservationDTOListResponse implements Serializable {
     @JsonProperty("body")
     private List<ReservationDTO> body;
@@ -19,9 +25,6 @@ public class ReservationDTOListResponse implements Serializable {
     private String error;
     @JsonProperty("status")
     private HttpStatus status;
-
-    private ReservationDTOListResponse() {
-    }
 
     /**
      * Constructor that creates a response with body, empty error and OK status
@@ -42,31 +45,6 @@ public class ReservationDTOListResponse implements Serializable {
             this.status = HttpStatus.ACCEPTED;
         }
     }
-
-    public List<ReservationDTO> getBody() {
-        return body;
-    }
-
-    public void setBody(List<ReservationDTO> body) {
-        this.body = body;
-    }
-
-    public String getError() {
-        return error;
-    }
-
-    public void setError(String error) {
-        this.error = error;
-    }
-
-    public HttpStatus getStatus() {
-        return status;
-    }
-
-    public void setStatus(HttpStatus status) {
-        this.status = status;
-    }
-
 
     @Override
     public int hashCode() {

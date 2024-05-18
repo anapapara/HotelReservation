@@ -4,6 +4,9 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.io.Serializable;
 import java.util.List;
@@ -14,6 +17,9 @@ import java.util.Objects;
  */
 @Entity
 @Table(name = "hotels")
+@Getter
+@Setter
+@NoArgsConstructor
 public class Hotel implements Serializable {
     @Id
     @JsonProperty("id")
@@ -33,9 +39,6 @@ public class Hotel implements Serializable {
     @JsonProperty("rooms")
     private List<Room> rooms;
 
-    public Hotel() {
-    }
-
     @JsonCreator(mode = JsonCreator.Mode.PROPERTIES)
     public Hotel(@JsonProperty("name") String name,
                  @JsonProperty("latitude") String latitude, @JsonProperty("longitude") String longitude,
@@ -43,46 +46,6 @@ public class Hotel implements Serializable {
         this.name = name;
         this.latitude = latitude;
         this.longitude = longitude;
-        this.rooms = rooms;
-    }
-
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    public String getLatitude() {
-        return latitude;
-    }
-
-    public void setLatitude(String latitude) {
-        this.latitude = latitude;
-    }
-
-    public String getLongitude() {
-        return longitude;
-    }
-
-    public void setLongitude(String longitude) {
-        this.longitude = longitude;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public List<Room> getRooms() {
-        return rooms;
-    }
-
-    public void setRooms(List<Room> rooms) {
         this.rooms = rooms;
     }
 

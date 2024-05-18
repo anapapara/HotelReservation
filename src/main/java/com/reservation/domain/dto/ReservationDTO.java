@@ -2,6 +2,9 @@ package com.reservation.domain.dto;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -10,6 +13,9 @@ import java.util.Objects;
 /**
  * DTO for Reservation class containing dates and just ids of hotel, user and room
  */
+@Getter
+@Setter
+@NoArgsConstructor
 public class ReservationDTO implements Serializable {
     @JsonProperty("id")
     private Integer id;
@@ -37,57 +43,6 @@ public class ReservationDTO implements Serializable {
         this.hotelId = hotelId;
         this.roomId = roomId;
         this.startDate = startDate;
-        this.endDate = endDate;
-    }
-
-    public ReservationDTO() {
-    }
-
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    public Integer getUserId() {
-        return userId;
-    }
-
-    public void setUserId(Integer userId) {
-        this.userId = userId;
-    }
-
-    public Integer getHotelId() {
-        return hotelId;
-    }
-
-    public void setHotelId(Integer hotelId) {
-        this.hotelId = hotelId;
-    }
-
-    public Integer getRoomId() {
-        return roomId;
-    }
-
-    public void setRoomId(Integer roomId) {
-        this.roomId = roomId;
-    }
-
-    public Date getStartDate() {
-        return startDate;
-    }
-
-    public void setStartDate(Date startDate) {
-        this.startDate = startDate;
-    }
-
-    public Date getEndDate() {
-        return endDate;
-    }
-
-    public void setEndDate(Date endDate) {
         this.endDate = endDate;
     }
 
