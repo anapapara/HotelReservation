@@ -41,10 +41,17 @@ public class ReservationService {
      * @param reservation Reservation to be saved
      * @return The reservation that was saved
      * @throws ReservationException Exception with specific error message for the cases when
+     *                              invalid dates
      *                              room is not available in given interval
      *                              or room is not available in general
      */
     public Reservation save(Reservation reservation) throws ReservationException {
+        if(reservation.getStartDate().after(reservation.getEndDate())){
+            throw new ReservationException("Invalid dates! Start date must be before end date!");
+        }
+        if(reservation.getStartDate().before(new Date())){
+            throw new ReservationException("Invalid dates! Reservation dates must be in future!");
+        }
         List<Reservation> reservationsRoom = reservationRepository.findByHotelRoom(reservation.getHotel().getId(), reservation.getRoom().getId());
         if (reservation.getRoom().getIsAvailable()) {
             for (Reservation r : reservationsRoom) {
@@ -96,10 +103,10 @@ public class ReservationService {
                 if (newRoom.isPresent()) {
                     return reservationRepository.updateRoom(id, newRoom.get());
                 } else {
-                    throw new ReservationException("New room you selected does not exist!");
+                    throw new ReservationException("The new room does not exist!");
                 }
             } else {
-                throw new ReservationException("You can no longer modify the reservation!");
+                throw new ReservationException("Reservation can no longer be modified!");
             }
         } else {
             throw new ReservationException("Invalid reservation!");
@@ -123,7 +130,7 @@ public class ReservationService {
             if (new Date().compareTo(reservation.get().getEndDate()) >= 0) {
                 return reservationRepository.updateFeedback(reservationId, feedback);
             }
-            throw new ReservationException("You cannot add feedback before reservation ending!");
+            throw new ReservationException("Feedback cannot be added before reservation ending!");
         } else {
             throw new ReservationException("Invalid reservation");
         }
@@ -147,10 +154,10 @@ public class ReservationService {
                 reservationRepository.deleteById(id);
                 return reservation.get();
             } else {
-                throw new ReservationException("You can no longer cancel the reservation!");
+                throw new ReservationException("The reservation can no longer be canceled!");
             }
         } else {
-            throw new ReservationException("The reservation you want to cancel does not exist!");
+            throw new ReservationException("The reservation does not exist!");
         }
     }
 
