@@ -142,9 +142,29 @@ public class MainView extends VerticalLayout implements BeforeEnterObserver {
      */
     private void createRoomGrid() {
         roomGrid = new Grid<>(Room.class);
-        roomGrid.setColumns("roomNumber", "type", "price");
+        roomGrid.removeAllColumns();
+        roomGrid.addColumn(Room::getRoomNumber).setHeader("Room Number");
+        roomGrid.addColumn(room -> mapRoomType(room.getType())).setHeader("Type");
+        roomGrid.addColumn(Room::getPrice).setHeader("Price");
 
         roomGrid.addItemClickListener(event -> openReservationDialog());
+    }
+
+    /**
+     * Maps room types from integer to string
+     *
+     * @param type Integer type to be mapped to string
+     * @return String referring mapped value
+     */
+
+    private String mapRoomType(int type) {
+        return switch (type) {
+            case 1 -> "Single room";
+            case 2 -> "Double room";
+            case 3 -> "Suite room";
+            case 4 -> "Matrimonial room";
+            default -> "Unknown";
+        };
     }
 
     /**
