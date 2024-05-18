@@ -13,8 +13,10 @@ import com.vaadin.flow.component.datepicker.DatePicker;
 import com.vaadin.flow.component.dialog.Dialog;
 import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.html.H1;
+import com.vaadin.flow.component.html.H2;
 import com.vaadin.flow.component.html.H3;
 import com.vaadin.flow.component.notification.Notification;
+import com.vaadin.flow.component.orderedlayout.FlexComponent;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.textfield.TextArea;
@@ -29,6 +31,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.reactive.function.client.WebClient;
 
+import java.text.SimpleDateFormat;
 import java.time.ZoneId;
 import java.util.Date;
 import java.util.List;
@@ -153,6 +156,11 @@ public class MainView extends VerticalLayout implements BeforeEnterObserver {
 
         reservationGrid.addComponentColumn(reservation -> new Button("Cancel", click -> cancelReservation(reservation)));
         reservationGrid.addComponentColumn(reservation -> new Button("Add feedback", click -> openUpdateDialog(reservation)));
+
+        reservationGrid.addItemClickListener(event -> {
+            Reservation reservation = event.getItem();
+            openReservationDetailsDialog(reservation);
+        });
     }
 
     /**
@@ -365,6 +373,58 @@ public class MainView extends VerticalLayout implements BeforeEnterObserver {
 
         });
         dialog.add(reserveButton);
+        dialog.open();
+    }
+
+    /**
+     * Open new read only dialog containing details for a reservation
+     *
+     * @param reservation Reservation which details to be shown
+     */
+    private void openReservationDetailsDialog(Reservation reservation) {
+        Dialog dialog = new Dialog();
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd MMMM yyyy");
+
+        VerticalLayout layout = new VerticalLayout();
+
+        TextField hotelNameField = new TextField("Hotel name");
+        hotelNameField.setValue(reservation.getHotel().getName());
+        hotelNameField.setReadOnly(true);
+
+        TextField roomNumberField = new TextField("Room number");
+        roomNumberField.setValue(String.valueOf(reservation.getRoom().getRoomNumber()));
+        roomNumberField.setReadOnly(true);
+
+        TextField startDateField = new TextField("Start date");
+        startDateField.setValue(dateFormat.format(reservation.getStartDate()));
+        startDateField.setReadOnly(true);
+
+        TextField endDateField = new TextField("End date");
+        endDateField.setValue(dateFormat.format(reservation.getEndDate()));
+        endDateField.setReadOnly(true);
+
+        TextField feedbackField = new TextField("Feedback");
+        feedbackField.setValue(reservation.getFeedback() != null ? reservation.getFeedback() : "");
+        feedbackField.setReadOnly(true);
+
+        H2 title = new H2("Reservation details");
+        HorizontalLayout titleLayout = new HorizontalLayout(title);
+        titleLayout.setJustifyContentMode(FlexComponent.JustifyContentMode.CENTER);
+        titleLayout.setWidthFull();
+
+        Button okButton = new Button("OK", click -> dialog.close());
+        HorizontalLayout buttonLayout = new HorizontalLayout(okButton);
+        buttonLayout.setJustifyContentMode(FlexComponent.JustifyContentMode.CENTER);
+        buttonLayout.setWidthFull();
+
+        layout.add(titleLayout);
+        layout.add(hotelNameField, roomNumberField, startDateField, endDateField, feedbackField);
+        layout.add(buttonLayout);
+
+
+        dialog.add(layout);
+        dialog.setWidth("450px");
+        dialog.setHeight("650px");
         dialog.open();
     }
 

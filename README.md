@@ -3,7 +3,7 @@ Hotel Reservation
 ### Table of Contents
 
 - <a href="#overview">Overview</a>
-- <a href="#instalation">Installtion details</a>
+- <a href="#instalation">Installation details</a>
 - <a href="#run">Usage details</a>
     - <a href="#ui">User interface</a>
     - <a href="#api">Detailed API Reference</a>
@@ -15,9 +15,9 @@ Hotel Reservation
 ## <a id="overview"></a>Overview
 
 <b>Hotel reservation</b> is an application that manages the reservation for hotel rooms. A user can select the nearby
-hotels by having with the possibility to specify the radius of searched area. He can also check the avilability of the
-hotel rooms and afterwards he can reservate available rooms for a period of time. The reservation is confirmed just if
-there is no other reservation for the room in selected interval. Any user may also cancel a reservation or modify the
+hotels by having with the possibility to specify the radius of searched area. He can also check the availability of the
+hotel rooms and afterward he can select and book any available rooms for a period of time. The reservation is confirmed just if
+there is no other reservation for the room in selected interval. The user may also cancel a reservation or modify the
 room booked but at least two hours before the check-in.
 
 <br>
@@ -30,7 +30,7 @@ The application can be packed using gradle by running the following command:
 gradlew clean build
 ```
 
-And afterwards start the application by running the jar
+And afterward start the application by running the jar
 
 ```
 java -jar hotelreservation.jar 
@@ -71,19 +71,19 @@ The user is able to perform the following actions:
 
 The user can directly call the endpoints.
 
-| HTTP Verbs | Endpoints                         | Action                                                                                                              
+| HTTP Verbs | Endpoints                         | Action                                                                                                              |
 |------------|-----------------------------------|---------------------------------------------------------------------------------------------------------------------| 
 | GET        | /hotels                           | Get a list with all hotels                                                                                          |
 | GET        | /hotels/id                        | Get details regarding a specific hotel                                                                              |
-| GET        | /hotels/latitude/longitude/radius | Get a list with all the hotels within a distance (radius) from a speficic point (defined by latitude and longitude) 
-| GET        | /rooms/id                         | Get all rooms for a hotel specified by id                                                                           
+| GET        | /hotels/latitude/longitude/radius | Get a list with all the hotels within a distance (radius) from a specific point (defined by latitude and longitude) |
+| GET        | /rooms/id                         | Get all rooms for a hotel specified by id                                                                           |
 | GET        | /reservations                     | Get all reservations                                                                                                |
-| GET        | /reservations/user/id             | Get al reservations made by a user that is specified through id                                                     
-| POST       | /reservations                     | Create new reservation                                                                                              
-| DELETE     | /reservations/id                  | Delete reservation with specified id                                                                                
-| PUT        | /reservations/id/roomId           | Update room (specified through roomId) for a reservation (specified through id)                                     
-| PUT        | reservations/feedback/id/feedback | Update feedback for a reservation (specified through id)                                                            
-| POST       | /users/login                      | Create a new user or return existing one                                                                            
+| GET        | /reservations/user/id             | Get al reservations made by a user that is specified through id                                                     |
+| POST       | /reservations                     | Create new reservation                                                                                              |
+| DELETE     | /reservations/id                  | Delete reservation with specified id                                                                                |
+| PUT        | /reservations/id/roomId           | Update room (specified through roomId) for a reservation (specified through id)                                     |
+| PUT        | reservations/feedback/id/feedback | Update feedback for a reservation (specified through id)                                                            |
+| POST       | /users/login                      | Create a new user or return existing one                                                                            |
 
 <br>
 

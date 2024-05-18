@@ -23,7 +23,10 @@ public class LoginView extends VerticalLayout {
     private transient WebClient webClient;
 
     /**
-     * Constructor of LoginView containing web elements initialization
+     * Constructor of LoginView containing web elements initialization and
+     * very simple login logic
+     * If the personal code introduced exists in database, the existing user will be logged in
+     * If the personal code introduced does not exist, a new user will be created and logged in
      */
     public LoginView() {
         webClient = (WebClient) VaadinSession.getCurrent().getAttribute("webClient");
