@@ -172,7 +172,13 @@ public class MainView extends VerticalLayout implements BeforeEnterObserver {
      */
     private void createReservationGrid() {
         reservationGrid = new Grid<>(Reservation.class);
-        reservationGrid.setColumns("hotel.name", "room.roomNumber", "startDate", "endDate", "feedback");
+        reservationGrid.removeAllColumns();
+        reservationGrid.addColumn(reservation -> reservation.getHotel().getName()).setHeader("Hotel name");
+        reservationGrid.addColumn(reservation -> reservation.getRoom().getRoomNumber()).setHeader("Room number");
+        reservationGrid.addColumn(reservation -> formatDate(reservation.getStartDate())).setHeader("Start date");
+        reservationGrid.addColumn(reservation -> formatDate(reservation.getEndDate())).setHeader("End date");
+        reservationGrid.addColumn(Reservation::getFeedback).setHeader("Feedback");
+
 
         reservationGrid.addComponentColumn(reservation -> new Button("Cancel", click -> cancelReservation(reservation)));
         reservationGrid.addComponentColumn(reservation -> new Button("Add feedback", click -> openUpdateDialog(reservation)));
@@ -181,6 +187,17 @@ public class MainView extends VerticalLayout implements BeforeEnterObserver {
             Reservation reservation = event.getItem();
             openReservationDetailsDialog(reservation);
         });
+    }
+
+    /**
+     * Format a date using 'dd MMMM yyyy' formatter
+     *
+     * @param date The date to be formatted
+     * @return Formatted date
+     */
+    private String formatDate(Date date) {
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd MMMM yyyy");
+        return dateFormat.format(date);
     }
 
     /**
@@ -403,7 +420,6 @@ public class MainView extends VerticalLayout implements BeforeEnterObserver {
      */
     private void openReservationDetailsDialog(Reservation reservation) {
         Dialog dialog = new Dialog();
-        SimpleDateFormat dateFormat = new SimpleDateFormat("dd MMMM yyyy");
 
         VerticalLayout layout = new VerticalLayout();
 
@@ -416,11 +432,11 @@ public class MainView extends VerticalLayout implements BeforeEnterObserver {
         roomNumberField.setReadOnly(true);
 
         TextField startDateField = new TextField("Start date");
-        startDateField.setValue(dateFormat.format(reservation.getStartDate()));
+        startDateField.setValue(formatDate(reservation.getStartDate()));
         startDateField.setReadOnly(true);
 
         TextField endDateField = new TextField("End date");
-        endDateField.setValue(dateFormat.format(reservation.getEndDate()));
+        endDateField.setValue(formatDate(reservation.getEndDate()));
         endDateField.setReadOnly(true);
 
         TextField feedbackField = new TextField("Feedback");
