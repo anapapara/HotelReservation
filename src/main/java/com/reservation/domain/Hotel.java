@@ -37,10 +37,9 @@ public class Hotel implements Serializable {
     }
 
     @JsonCreator(mode = JsonCreator.Mode.PROPERTIES)
-    public Hotel(@JsonProperty("id") Integer id, @JsonProperty("name") String name,
+    public Hotel(@JsonProperty("name") String name,
                  @JsonProperty("latitude") String latitude, @JsonProperty("longitude") String longitude,
                  @JsonProperty("rooms") List<Room> rooms) {
-        this.id = id;
         this.name = name;
         this.latitude = latitude;
         this.longitude = longitude;

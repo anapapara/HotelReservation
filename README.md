@@ -80,6 +80,6 @@ The user can directly call the endpoints.
 - **SpringBoot JPA** <br> Spring Data JPA was employed to manage the persistence layer.
 - **SQLite** <br> SQLite was chosen as the database management system to store application data.
 - **Vaadin 20** <br> Vaadin was used to build the web-based user interface, enabling users to interact with the system in a more friendly way.
-
+- **JUnit 5** <br> JUnit was user for creating tests.
 
 
