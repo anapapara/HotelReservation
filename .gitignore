@@ -5,6 +5,10 @@ build/
 !**/src/main/**/build/
 !**/src/test/**/build/
 
+# Vaadin
+node_modules/
+frontend/generated/
+
 ### STS ###
 .apt_generated
 .classpath
